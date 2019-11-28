@@ -5,6 +5,7 @@
 #include <vector>
 #define BLOCK 512
 #define DIRE 12
+#define OUT 36
 using std::vector;
 using std::cout;
 using std::endl;
@@ -16,7 +17,7 @@ int FAT[400];
 //int start;
 void OutEntry(){
 	for(auto e : directory){
-		cout << e.Name << "  " << e.Size << "  " << e.Start << endl;
+		cout << e.Name << "  " << e.Size << "  " << e.Start << "  " << e.Clusters << endl;
 	}
 }
 
@@ -38,14 +39,15 @@ void AddFAT(string N, int S){
 file temp(N, S, firstAVA());
 directory.push_back(temp);
 //FAT[temp.Start] = -1;
-int f=nextAVA();
-cout << f << endl;
+int F=temp.Start;
+int Sec=nextAVA();
+//cout << f << endl;
 for(int i = 0; i <temp.Clusters; i++)
-{ cout << "R"; }
+{ if (i == (temp.Clusters-1)){FAT[F]=-1; }
 }
-
+}
 void OutFAT(){
-	for (int j=0; j<252; j++){
+	for (int j=0; j<OUT; j++){
 //for (int i = 0; i < DIRE; i++
 cout << FAT[j] << "  ";
 if (((j+1)%12)==0) {cout << endl;}
@@ -63,6 +65,7 @@ OutFAT();
 //cout << firstAVA();
 AddFAT("..",0);
 OutEntry();
+OutFAT();
 return 0;
 
 }
