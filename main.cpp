@@ -15,9 +15,20 @@ int FAT[400];
 //string N;
 //int S;
 //int start;
+void OutClusters(file Entry) {
+	int next = FAT[Entry.Start];
+	cout << endl << "cludters: ";
+	cout << Entry.Start;
+	for (int i = 1; i<Entry.Clusters; i++) {
+	cout << next;
+	next = FAT[next];
+	}
+	cout << endl;
+}
 void OutEntry(){
 	for(auto e : directory){
 		cout << e.Name << "  " << e.Size << "  " << e.Start << "  " << e.Clusters << endl;
+OutClusters(e);
 	}
 }
 
@@ -58,13 +69,6 @@ cout << FAT[j] << "  ";
 if (((j+1)%12)==0) {cout << endl;}
 	}
 }
-//void OutClusters(file Entry) {
-//	int next = FAT[file.Start];
-//	for (int i = 0; i>file.Clusters; i++) {
-//	cout << next;
-//	next = FAT[next];
-//	}
-//}
 int main(){
 OutFAT();
 //cout << firstAVA();
