@@ -61,8 +61,21 @@ void RemFAT(file e){
 	if (e.Name == " ") {
 		cout << endl << "File " << SName << " not found." <<endl;
 		return;}
-//	file temp = directory[spot];
-	cout << e.Start;
+	int next=FAT[e.Start];
+	if (next == -1) {
+		FAT[e.Start] = 0;
+		return;
+	}
+	int cur=next;
+	for (int i = 0; i<e.Clusters; i++) {
+//	cout << next;
+if (cur == -1) {
+	cout << "off by one";}
+	next = FAT[next];
+	FAT[cur] = 0;
+	cur=next;
+	}
+	cout << endl;
 }
 
 
@@ -102,8 +115,10 @@ AddFAT("third", 2000);
 OutEntry();
 OutFAT();
  RemFAT(Search("second"));
-RemFAT(Search("four"));
-
+OutFAT();
+ AddFAT("Fourth", 1500);
+//RemFAT(Search("four"));
+OutFAT();
 return 0;
 
 }
