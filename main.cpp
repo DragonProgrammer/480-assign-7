@@ -5,7 +5,7 @@
 #include <vector>
 #define BLOCK 512
 #define DIRE 12
-#define OUT 36
+#define OUT 24
 using std::vector;
 using std::cout;
 using std::endl;
@@ -119,6 +119,7 @@ OutFAT();
  AddFAT("Fourth", 1500);
 //RemFAT(Search("four"));
 OutFAT();
+OutEntry();
 return 0;
 
 }
