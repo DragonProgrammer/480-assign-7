@@ -46,6 +46,19 @@ int nextAVA(){
 	return f;
 }
 
+int Search(string N){
+	int spot = 0;
+	for(auto e : directory){
+		if (e.Name == N){ return spot;}
+		spot++;
+	}
+return -1;
+}
+
+		
+		//void RemFAT()
+
+
 void AddFAT(string N, int S){
 file temp(N, S, firstAVA());
 directory.push_back(temp);
@@ -62,6 +75,8 @@ Sec=nextAVA();
 	}
 }
 }
+
+
 void OutFAT(){
 	for (int j=0; j<OUT; j++){
 //for (int i = 0; i < DIRE; i++
@@ -78,6 +93,9 @@ AddFAT("second", 500);
 AddFAT("third", 2000);
 OutEntry();
 OutFAT();
+cout << Search("second") << endl;
+cout << Search("four") << endl;
+
 return 0;
 
 }
