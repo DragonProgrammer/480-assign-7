@@ -4,6 +4,7 @@
 #define BLOCK 512
 using std::string;
 class file{
+	public:
 	string Name;
 	int Size;
 	int Start;

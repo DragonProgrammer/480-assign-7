@@ -11,19 +11,28 @@ using std::endl;
 using std::array;
 vector<file> directory;
 int FAT[400];
-string N;
-int S;
-int start;
-//int numClusters(int F) {
-  //     if (F%BLOCK>0){ return (F/BLOCK)+1;}
-//return F/BLOCK;
-//}
+//string N;
+//int S;
+//int start;
+void OutEntry(){
+	for(auto e : directory){
+		cout << e.Name << "  " << e.Size << "  " << e.Start << endl;
+	}
+}
+
 int firstAVA(){
 	int i = 0;
 	while (FAT[i] != 0){
 		i++;}
 	return i;
 }
+
+
+void AddFAT(string N, int S){
+file temp(N, S, firstAVA());
+directory.push_back(temp);
+}
+
 void OutFAT(){
 	for (int j=0; j<252; j++){
 //for (int i = 0; i < DIRE; i++
@@ -40,6 +49,9 @@ if (((j+1)%12)==0) {cout << endl;}
 //}
 int main(){
 OutFAT();
-cout << firstAVA();
+//cout << firstAVA();
+AddFAT("..",0);
+OutEntry();
 return 0;
+
 }
