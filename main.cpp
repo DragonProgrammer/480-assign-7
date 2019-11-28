@@ -27,10 +27,21 @@ int firstAVA(){
 	return i;
 }
 
+int nextAVA(){
+	int f = firstAVA();
+	f++;
+	while(FAT[f] != 0) {f++;}
+	return f;
+}
 
 void AddFAT(string N, int S){
 file temp(N, S, firstAVA());
 directory.push_back(temp);
+//FAT[temp.Start] = -1;
+int f=nextAVA();
+cout << f << endl;
+for(int i = 0; i <temp.Clusters; i++)
+{ cout << "R"; }
 }
 
 void OutFAT(){
