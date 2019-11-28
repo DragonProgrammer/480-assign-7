@@ -44,6 +44,11 @@ int Sec=nextAVA();
 //cout << f << endl;
 for(int i = 0; i <temp.Clusters; i++)
 { if (i == (temp.Clusters-1)){FAT[F]=-1; }
+	else {
+		FAT[F]=Sec;
+ F=firstAVA();
+Sec=nextAVA();
+	}
 }
 }
 void OutFAT(){
@@ -64,6 +69,9 @@ int main(){
 OutFAT();
 //cout << firstAVA();
 AddFAT("..",0);
+AddFAT("first", 512);
+AddFAT("second", 500);
+AddFAT("third", 2000);
 OutEntry();
 OutFAT();
 return 0;
