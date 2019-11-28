@@ -12,7 +12,7 @@ using std::endl;
 using std::array;
 vector<file> directory;
 int FAT[400];
-//string N;
+string SName; // for search name so can cerror
 //int S;
 //int start;
 void OutClusters(file Entry) {
@@ -46,17 +46,25 @@ int nextAVA(){
 	return f;
 }
 
-int Search(string N){
+file Search(string N){
 	int spot = 0;
+	SName = N;
 	for(auto e : directory){
-		if (e.Name == N){ return spot;}
+		if (e.Name == N){ return e;}
 		spot++;
 	}
-return -1;
+return file();
 }
 
 		
-		//void RemFAT()
+void RemFAT(file e){
+	if (e.Name == " ") {
+		cout << endl << "File " << SName << " not found." <<endl;
+		return;}
+//	file temp = directory[spot];
+	cout << e.Start;
+}
+
 
 
 void AddFAT(string N, int S){
@@ -93,8 +101,8 @@ AddFAT("second", 500);
 AddFAT("third", 2000);
 OutEntry();
 OutFAT();
-cout << Search("second") << endl;
-cout << Search("four") << endl;
+ RemFAT(Search("second"));
+RemFAT(Search("four"));
 
 return 0;
 
