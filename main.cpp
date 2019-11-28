@@ -2,15 +2,16 @@
 #include "table.hpp"
 #include <fstream>
 #include <array>
-#include <vector>
+#include <list>
+#include <iterator>
 #define BLOCK 512
 #define DIRE 12
 #define OUT 24
-using std::vector;
+using std::list;
 using std::cout;
 using std::endl;
 using std::array;
-vector<file> directory;
+list<file> directory;
 int FAT[400];
 string SName; // for search name so can cerror
 //int S;
@@ -46,39 +47,42 @@ int nextAVA(){
 	return f;
 }
 
-int Search(string N){
+file Search(string N){
 	int spot = 0;
 	SName = N;
 	for(auto e : directory){
-		if (e.Name == N){ return spot;}
+		if (e.Name == N){ return e;}
 		spot++;
 	}
-return -1;
+return file();
 }
 
 		
-void RemFAT(int spot){
-	
-	
-	file e = directory[spot];
+void RemFAT(file e){
 	if (e.Name == " ") {
 		cout << endl << "File " << SName << " not found." <<endl;
 		return;}
 	int next=FAT[e.Start];
 	if (next == -1) {
 		FAT[e.Start] = 0;
-		return;
+//
+	return;
 	}
 	int cur=next;
 	for (int i = 0; i<e.Clusters; i++) {
-//	cout << next;
 if (cur == -1) {
 	cout << "off by one";}
 	next = FAT[next];
 	FAT[cur] = 0;
 	cur=next;
 	}
-directory.erase(spot);
+auto spot=directory.begin();
+for (auto &D : directory){
+	if( e.Name == D.Name){
+		directory.erase(spot);
+	}
+	spot++;
+}
 }
 
 
@@ -115,17 +119,19 @@ AddFAT("..",0);
 AddFAT("first", 512);
 AddFAT("second", 500);
 AddFAT("third", 2000);
-OutEntry();
+//OutEntry();
 OutFAT();
  RemFAT(Search("second"));
 //OutFAT();
  AddFAT("Fourth", 1500);
 //RemFAT(Search("four"));
-//OutFAT();
+OutFAT();
 OutEntry();
+cout << "here";
 RemFAT(Search("third"));
 OutFAT();
 OutEntry();
 return 0;
+
 
 }
