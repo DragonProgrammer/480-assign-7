@@ -46,18 +46,21 @@ int nextAVA(){
 	return f;
 }
 
-file Search(string N){
+int Search(string N){
 	int spot = 0;
 	SName = N;
 	for(auto e : directory){
-		if (e.Name == N){ return e;}
+		if (e.Name == N){ return spot;}
 		spot++;
 	}
-return file();
+return -1;
 }
 
 		
-void RemFAT(file e){
+void RemFAT(int spot){
+	
+	
+	file e = directory[spot];
 	if (e.Name == " ") {
 		cout << endl << "File " << SName << " not found." <<endl;
 		return;}
@@ -75,7 +78,7 @@ if (cur == -1) {
 	FAT[cur] = 0;
 	cur=next;
 	}
-	cout << endl;
+directory.erase(spot);
 }
 
 
@@ -106,7 +109,7 @@ if (((j+1)%12)==0) {cout << endl;}
 	}
 }
 int main(){
-OutFAT();
+//OutFAT();
 //cout << firstAVA();
 AddFAT("..",0);
 AddFAT("first", 512);
@@ -115,9 +118,12 @@ AddFAT("third", 2000);
 OutEntry();
 OutFAT();
  RemFAT(Search("second"));
-OutFAT();
+//OutFAT();
  AddFAT("Fourth", 1500);
 //RemFAT(Search("four"));
+//OutFAT();
+OutEntry();
+RemFAT(Search("third"));
 OutFAT();
 OutEntry();
 return 0;
