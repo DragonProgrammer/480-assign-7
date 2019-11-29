@@ -73,13 +73,14 @@ void RemFAT(file e){
 	if (e.Name == " ") {
 		cout << endl << "File " << SName << " not found." <<endl;
 		return;}
-	int next=FAT[e.Start];
+	int next=e.Start;
 	if (next == -1) {
 		FAT[e.Start] = 0;
 		Delete(e);
 	return;
 	}
 	int cur=next;
+	cout << endl << cur << endl;
 	for (int i = 0; i<e.Clusters; i++) {
 if (cur == -1) {
 	cout << "off by one";
