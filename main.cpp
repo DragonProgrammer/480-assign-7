@@ -6,8 +6,8 @@
 #include <iterator>
 #include <list>
 #define BLOCK 512
-#define DIRE 12
-#define OUT 12
+#define DIRE 4
+#define OUT 24
 using std::array;
 using std::cout;
 using std::endl;
@@ -32,7 +32,6 @@ void OutEntry() {
     cout << e.Name << "  " << e.Size << "  " << e.Start << "  " << e.Clusters;
     OutClusters(e);
   }
-  cout << "here";
 }
 
 int firstAVA() {
@@ -74,6 +73,8 @@ void Delete(file e) {
     spot++;
   }
 }
+
+
 void RemFAT(file e) {
   if (e.Name == " ") {
     cout << endl << "File " << SName << " not found." << endl;
@@ -86,7 +87,7 @@ void RemFAT(file e) {
     return;
   }
   int cur = next;
-  for (int i = 0; i < e.Clusters; i++) {
+  for (int i = 1; i < e.Clusters; i++) {
     if (cur == -1) {
       cout << "off by one";
     }
@@ -97,9 +98,12 @@ void RemFAT(file e) {
   Delete(e);
 }
 
+
+
 void AddFAT(string N, int S) {
   file temp(N, S, firstAVA());
-  directory.push_back(temp);
+if(temp.Start==0){ directory.push_front(temp);} //replaces directory block
+else{ directory.push_back(temp);}
   int F = temp.Start;
   int Sec = nextAVA();
   for (int i = 0; i < temp.Clusters; i++) {
@@ -113,6 +117,16 @@ void AddFAT(string N, int S) {
   }
 }
 
+void AddDB(file d){
+	if ((directory.size()+1) > (DIRE * d.Clusters)){
+		string N= d.Name;
+		int S = d.Size+BLOCK;
+		RemFAT(d);
+		AddFAT(N,S);
+	return;
+	}
+	cout << "Not needed" << endl;
+}
 void Name(string O, string N) {
   auto spot = directory.begin();
   for (auto &D : directory) {
@@ -126,8 +140,9 @@ void Name(string O, string N) {
 
 void EditFAT(file e, int s) {
   string n = e.Name;
-  RemFAT(e);
   AddFAT("TEMP", s);
+  RemFAT(e);
+  Name("TEMP", n);
 }
 
 void OutFAT() {
@@ -141,22 +156,27 @@ void OutFAT() {
   }
   cout << endl;
 }
+
 int main() {
   // OutFAT();
   // cout << firstAVA();
+  AddFAT(".", 512);
   AddFAT("..", 0);
   AddFAT("first", 512);
+  AddDB(Search("."));
   AddFAT("second", 500);
-  AddFAT("third", 2000);
-  RemFAT(Search("second"));
-  AddFAT("Fourth", 1500);
-  // RemFAT(Search("four"));
-  RemFAT(Search("third"));
-  //  OutFAT();
-  AddFAT("five", 5);
   OutFAT();
   OutEntry();
+  AddDB(Search("."));
+  AddFAT("third", 2000);
+  OutFAT();
+  OutEntry();
+  AddFAT("Fourth", 1500);
+  AddFAT("five", 5);
   Name("five", "FIVE");
+  OutEntry();
+  EditFAT(Search("Fourth"),2500);
+  OutFAT();
   OutEntry();
   return 0;
 }
