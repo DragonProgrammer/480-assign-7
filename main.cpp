@@ -4,6 +4,7 @@
 #include <array>
 #include <list>
 #include <iterator>
+#include <algorithm>
 #define BLOCK 512
 #define DIRE 12
 #define OUT 12
@@ -60,14 +61,12 @@ return file();
 
 		
 void RemFAT(file e){
-//cout << "In Rem";
 	if (e.Name == " ") {
 		cout << endl << "File " << SName << " not found." <<endl;
 		return;}
 	int next=FAT[e.Start];
 	if (next == -1) {
 		FAT[e.Start] = 0;
-//
 	return;
 	}
 	int cur=next;
@@ -78,13 +77,14 @@ if (cur == -1) {
 	FAT[cur] = 0;
 	cur=next;
 	}
-//auto spot=directory.begin();
+auto spot=directory.begin();
 for (auto &D : directory){
 	if( e.Name == D.Name){
-	//	directory.erase(spot);
+		directory.erase(spot);
+			return;
 	cout << "match";
 	}
-//	spot++;
+	spot++;
 }
 }
 
@@ -132,6 +132,7 @@ OutFAT();
 //OutEntry();
 //cout << "here";
 RemFAT(Search("third"));
+OutFAT();
 AddFAT("five", 5);
 OutFAT();
 OutEntry();
