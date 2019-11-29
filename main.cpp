@@ -6,7 +6,7 @@
 #include <iterator>
 #define BLOCK 512
 #define DIRE 12
-#define OUT 24
+#define OUT 12
 using std::list;
 using std::cout;
 using std::endl;
@@ -18,7 +18,7 @@ string SName; // for search name so can cerror
 //int start;
 void OutClusters(file Entry) {
 	int next = FAT[Entry.Start];
-	cout << endl << "cludters: ";
+	cout << "      clusters: ";
 	cout << Entry.Start;
 	for (int i = 1; i<Entry.Clusters; i++) {
 	cout << next;
@@ -28,9 +28,10 @@ void OutClusters(file Entry) {
 }
 void OutEntry(){
 	for(auto e : directory){
-		cout << e.Name << "  " << e.Size << "  " << e.Start << "  " << e.Clusters << endl;
+		cout << e.Name << "  " << e.Size << "  " << e.Start << "  " << e.Clusters;
 OutClusters(e);
 	}
+	cout << "here";
 }
 
 int firstAVA(){
@@ -59,6 +60,7 @@ return file();
 
 		
 void RemFAT(file e){
+//cout << "In Rem";
 	if (e.Name == " ") {
 		cout << endl << "File " << SName << " not found." <<endl;
 		return;}
@@ -76,12 +78,13 @@ if (cur == -1) {
 	FAT[cur] = 0;
 	cur=next;
 	}
-auto spot=directory.begin();
+//auto spot=directory.begin();
 for (auto &D : directory){
 	if( e.Name == D.Name){
-		directory.erase(spot);
+	//	directory.erase(spot);
+	cout << "match";
 	}
-	spot++;
+//	spot++;
 }
 }
 
@@ -90,10 +93,8 @@ for (auto &D : directory){
 void AddFAT(string N, int S){
 file temp(N, S, firstAVA());
 directory.push_back(temp);
-//FAT[temp.Start] = -1;
 int F=temp.Start;
 int Sec=nextAVA();
-//cout << f << endl;
 for(int i = 0; i <temp.Clusters; i++)
 { if (i == (temp.Clusters-1)){FAT[F]=-1; }
 	else {
@@ -106,11 +107,13 @@ Sec=nextAVA();
 
 
 void OutFAT(){
+	cout << endl;
 	for (int j=0; j<OUT; j++){
 //for (int i = 0; i < DIRE; i++
 cout << FAT[j] << "  ";
 if (((j+1)%12)==0) {cout << endl;}
 	}
+	cout << endl;
 }
 int main(){
 //OutFAT();
@@ -119,16 +122,17 @@ AddFAT("..",0);
 AddFAT("first", 512);
 AddFAT("second", 500);
 AddFAT("third", 2000);
-//OutEntry();
+OutEntry();
 OutFAT();
  RemFAT(Search("second"));
 //OutFAT();
  AddFAT("Fourth", 1500);
 //RemFAT(Search("four"));
 OutFAT();
-OutEntry();
-cout << "here";
+//OutEntry();
+//cout << "here";
 RemFAT(Search("third"));
+AddFAT("five", 5);
 OutFAT();
 OutEntry();
 return 0;
