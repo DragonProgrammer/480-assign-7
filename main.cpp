@@ -58,25 +58,7 @@ file Search(string N){
 	}
 return file();
 }
-
-		
-void RemFAT(file e){
-	if (e.Name == " ") {
-		cout << endl << "File " << SName << " not found." <<endl;
-		return;}
-	int next=FAT[e.Start];
-	if (next == -1) {
-		FAT[e.Start] = 0;
-	return;
-	}
-	int cur=next;
-	for (int i = 0; i<e.Clusters; i++) {
-if (cur == -1) {
-	cout << "off by one";}
-	next = FAT[next];
-	FAT[cur] = 0;
-	cur=next;
-	}
+void Delete(file e){
 auto spot=directory.begin();
 for (auto &D : directory){
 	if( e.Name == D.Name){
@@ -86,6 +68,27 @@ for (auto &D : directory){
 	}
 	spot++;
 }
+}
+void RemFAT(file e){
+	if (e.Name == " ") {
+		cout << endl << "File " << SName << " not found." <<endl;
+		return;}
+	int next=FAT[e.Start];
+	if (next == -1) {
+		FAT[e.Start] = 0;
+		Delete(e);
+	return;
+	}
+	int cur=next;
+	for (int i = 0; i<e.Clusters; i++) {
+if (cur == -1) {
+	cout << "off by one";
+}
+	next = FAT[next];
+	FAT[cur] = 0;
+	cur=next;
+	}
+Delete(e);
 }
 
 
