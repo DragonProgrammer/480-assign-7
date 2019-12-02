@@ -55,6 +55,7 @@ clean:
 	rmdir --ignore-fail-on-non-empty .d
 #	rm .*~
 #	rm TAGS
+	rm -rf .d
 
 include $(wildcard $(DEPDIR)/*.d)
 include $(wildcard *.d)

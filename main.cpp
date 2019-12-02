@@ -15,8 +15,17 @@ using std::list;
 list<file> directory;
 int FAT[400];
 string SName; // for search name so can cerror
-// int S;
-// int start;
+
+/**
+ * Function Outclusters
+ *
+ * Use outputs the cluster of each entry.
+ *
+ * Arguments: Entry: derectory entry
+ *
+ * returns: none
+ */
+
 void OutClusters(file Entry) {
   int next = FAT[Entry.Start];
   cout << "      clusters: ";
@@ -27,12 +36,22 @@ void OutClusters(file Entry) {
   }
   cout << endl;
 }
+/**
+ * function outentry
+ *
+ * use Output the data of each directory entry
+ *
+ * Arguments None
+ *
+ * REturn none
+ */
 void OutEntry() {
   for (auto e : directory) {
     cout << e.Name << "  " << e.Size << "  " << e.Start << "  " << e.Clusters;
     OutClusters(e);
   }
 }
+
 
 int firstAVA() {
   int i = 0;
@@ -67,8 +86,9 @@ void Delete(file e) {
   for (auto &D : directory) {
     if (e.Name == D.Name) {
       directory.erase(spot);
-      return;
+    //  return;
       cout << "match";
+   return;
     }
     spot++;
   }
@@ -81,13 +101,13 @@ void RemFAT(file e) {
     return;
   }
   int next = e.Start;
-  if (next == -1) {
-    FAT[e.Start] = 0;
-    Delete(e);
-    return;
-  }
+ // if (next == -1) {
+   // FAT[e.Start] = 0;
+  //  Delete(e);
+  //  return;
+ // }
   int cur = next;
-  for (int i = 1; i < e.Clusters; i++) {
+  for (int i = 1; i<= e.Clusters; i++) {
     if (cur == -1) {
       cout << "off by one";
     }
@@ -98,6 +118,18 @@ void RemFAT(file e) {
   Delete(e);
 }
 
+
+void OutFAT() {
+  cout << endl;
+  for (int j = 0; j < OUT; j++) {
+    // for (int i = 0; i < DIRE; i++
+    cout << FAT[j] << "  ";
+    if (((j + 1) % 12) == 0) {
+      cout << endl;
+    }
+  }
+  cout << endl;
+}
 
 
 void AddFAT(string N, int S) {
@@ -118,14 +150,21 @@ else{ directory.push_back(temp);}
   }
 }
 
+
+void CopyFAT(string N){
+file e=	Search(N);
+	AddFAT(e.Name, e.Size);
+}
+
 void AddDB(file d){
 	int a= directory.size()+1;
 	int b= DIRE * d.Clusters; // casting signed an unsigned to ints
 	if (a >b){
 		string N= d.Name;
 		int S = d.Size+BLOCK;
-		RemFAT(d);
-	cout << "in here" <<endl;
+		RemFAT(Search(N));
+OutFAT();
+		cout << "in here" <<endl;
 		AddFAT(N,S);
 
 		return;
@@ -150,18 +189,6 @@ void EditFAT(file e, int s) {
   Name("TEMP", n);
 }
 
-void OutFAT() {
-  cout << endl;
-  for (int j = 0; j < OUT; j++) {
-    // for (int i = 0; i < DIRE; i++
-    cout << FAT[j] << "  ";
-    if (((j + 1) % 12) == 0) {
-      cout << endl;
-    }
-  }
-  cout << endl;
-}
-
 int main() {
   // OutFAT();
   // cout << firstAVA();
@@ -170,18 +197,26 @@ int main() {
   AddFAT("first", 512);
   AddDB(Search("."));
   AddFAT("second", 500);
-  OutFAT();
-  OutEntry();
-  AddDB(Search("."));
+//  OutFAT();
+ // OutEntry();
+//RemFAT(Search("first"));
+
+	  AddDB(Search("."));
   AddFAT("third", 2000);
   OutFAT();
-  OutEntry();
-  AddFAT("Fourth", 1500);
-  AddFAT("five", 5);
-  Name("five", "FIVE");
-  OutEntry();
-  EditFAT(Search("Fourth"),2500);
-  OutFAT();
+//  OutEntry();
+//  AddFAT("Fourth", 1500);
+ // AddFAT("five", 5);
+//RemFAT(Search("third"));
+
+ // Name("five", "FIVE");
+ // OutEntry();
+ // EditFAT(Search("Fourth"),2500);
+  //OutFAT();
+
+
+//RemFAT(Search("first"));
+//OutFAT();
   OutEntry();
   return 0;
 }
