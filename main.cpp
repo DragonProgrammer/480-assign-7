@@ -102,7 +102,8 @@ void RemFAT(file e) {
 
 void AddFAT(string N, int S) {
   file temp(N, S, firstAVA());
-if(temp.Start==0){ directory.push_front(temp);} //replaces directory block
+cout << temp.Start << endl;
+  if(temp.Start==0){ directory.push_front(temp);} //replaces directory block
 else{ directory.push_back(temp);}
   int F = temp.Start;
   int Sec = nextAVA();
@@ -118,12 +119,16 @@ else{ directory.push_back(temp);}
 }
 
 void AddDB(file d){
-	if ((directory.size()+1) > (DIRE * d.Clusters)){
+	int a= directory.size()+1;
+	int b= DIRE * d.Clusters; // casting signed an unsigned to ints
+	if (a >b){
 		string N= d.Name;
 		int S = d.Size+BLOCK;
 		RemFAT(d);
+	cout << "in here" <<endl;
 		AddFAT(N,S);
-	return;
+
+		return;
 	}
 	cout << "Not needed" << endl;
 }

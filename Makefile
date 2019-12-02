@@ -53,7 +53,7 @@ csyntax:
 clean:
 	rm -f *.o *.bin .d/*.d
 	rmdir --ignore-fail-on-non-empty .d
-	rm .*~
+#	rm .*~
 #	rm TAGS
 
 include $(wildcard $(DEPDIR)/*.d)
